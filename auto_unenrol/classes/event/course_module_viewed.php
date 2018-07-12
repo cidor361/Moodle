@@ -15,20 +15,34 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * autoenrol enrolment plugin.
+ * Defines the view event.
  *
- * This plugin automatically enrols a user onto a course the first time they try to access it.
- *
- * @package    enrol_autoenrol
- * @copyright  2013 Mark Ward & Matthew Cannings - based on code by Martin Dougiamas, Petr Skoda, Eugene Venter and others
- * @copyright  2017 onwards Roberto Pinna
+ * @package    mod_auto_unenrol
+ * @copyright  2016 Your Name <your@email.address>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace mod_auto_unenrol\event;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2018022600;
-$plugin->requires = 2013111800.00;      // Requires this Moodle version (2.6).
-$plugin->release = '2.0';               // Plugin release.
-$plugin->component = 'enrol_autoenrol'; // Full name of the plugin (used for diagnostics).
-$plugin->maturity = MATURITY_STABLE;    // The moodle.org release.
+/**
+ * The mod_auto_unenrol instance viewed event class
+ *
+ * If the view mode needs to be stored as well, you may need to
+ * override methods get_url() and get_legacy_log_data(), too.
+ *
+ * @package    mod_auto_unenrol
+ * @copyright  2016 Your Name <your@email.address>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class course_module_viewed extends \core\event\course_module_viewed {
+
+    /**
+     * Initialize the event
+     */
+    protected function init() {
+        $this->data['objecttable'] = 'auto_unenrol';
+        parent::init();
+    }
+}
