@@ -15,15 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin strings are defined here.
+ * Plugin administration pages are defined here.
  *
  * @package     enrol_autounenrol
- * @category    string
+ * @category    admin
  * @copyright   2018 Igor <cidor361@gmail.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['autounenrol:config'] = 'config';
-$string['pluginname'] = 'autounenrol';
+if ($ADMIN->fulltree) {
+   // TODO: Define the plugin settings page.
+   // https://docs.moodle.org/dev/Admin_settings
+}

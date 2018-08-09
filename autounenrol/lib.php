@@ -33,18 +33,6 @@ defined('MOODLE_INTERNAL') || die();
 class enrol_autounenrol_plugin extends enrol_plugin {
 
     /**
-     * Does this plugin allow manual enrolments?
-     *
-     * All plugins allowing this must implement 'enrol/autounenrol:enrol' capability.
-     *
-     * @param stdClass $instance Course enrol instance.
-     * @return bool True means user with 'enrol/autounenrol:enrol' may enrol others freely, false means nobody may add more enrolments manually.
-     */
-    public function allow_enrol($instance) {
-        return false;
-    }
-
-    /**
      * Does this plugin allow manual unenrolment of all users?
      *
      * All plugins allowing this must implement 'enrol/autounenrol:unenrol' capability.
@@ -53,6 +41,18 @@ class enrol_autounenrol_plugin extends enrol_plugin {
      * @return bool True means user with 'enrol/autounenrol:unenrol' may unenrol others freely, false means nobody may touch user_enrolments.
      */
     public function allow_unenrol($instance) {
+        return true;
+    }
+
+    /**
+     * Does this plugin allow manual changes in user_enrolments table?
+     *
+     * All plugins allowing this must implement 'enrol/autounenrol:manage' capability.
+     *
+     * @param stdClass $instance Course enrol instance.
+     * @return bool True means it is possible to change enrol period and status in user_enrolments table.
+     */
+    public function allow_manage($instance) {
         return true;
     }
 
