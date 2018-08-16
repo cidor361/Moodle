@@ -15,17 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Plugin strings are defined here.
  *
- * @package     block_autounenrol
+ * @package     block_unenrolpl
+ * @category    string
  * @copyright   2018 Igor <cidor361@gmail.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'block_autounenrol';
-$plugin->release = '0.1.0';
-$plugin->version = 2018080900;
-$plugin->requires = 2018051700;
-$plugin->maturity = MATURITY_ALPHA;
+$string['pluginname'] = 'blocka_unenrolpl';
+$string['unenrolplsettings'] = 'settings';
+$string['edithtml'] = 'edit';
+$string['textfields'] = 'List of users';
+$string['addpage'] = 'View list of user completed course to unenrol them';
+$string['buttonCancel'] = 'Cancel';
+$string['buttonUnenrol'] = 'Unenrol';
+$string['resert'] = 'Reset';
+$string['savechanges'] = 'Save changes';
+$string['invalidcourse'] = 'Invalid course';

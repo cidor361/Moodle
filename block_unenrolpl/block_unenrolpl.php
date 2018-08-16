@@ -15,28 +15,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Block autounenrol is defined here.
+ * Block unenrolpl is defined here.
  *
- * @package     block_autounenrol
+ * @package     block_unenrolpl
  * @copyright   2018 Igor <cidor361@gmail.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
- * autounenrol block.
+ * unenrolpl block.
  *
- * @package    block_autounenrol
+ * @package    block_unenrolpl
  * @copyright  2018 Igor <cidor361@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_autounenrol extends block_base {
+class block_unenrolpl extends block_base {
 
     /**
      * Initializes class member variables.
      */
     public function init() {
         // Needed by Moodle to differentiate between blocks.
-        $this->title = get_string('pluginname', 'block_autounenrol');
+        $this->title = get_string('pluginname', 'block_unenrolpl');
     }
 
     /**
@@ -63,44 +63,14 @@ class block_autounenrol extends block_base {
         if (!empty($this->config->text)) {
             $this->content->text = $this->config->text;
         } else {
-            $text = 'Please define the content text in /blocks/autounenrol/block_autounenrol.php.';
-            $this->content->text = $text;
-        }
+            $this->content->text = 'list of users';
+            global $COURSE;
 
+// The other code.
+            $url = new moodle_url('/blocks/unenrolpl/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
+            $this->content->footer = html_writer::link($url, get_string('addpage', 'block_unenrolpl'));
+        }
         return $this->content;
     }
 
-    /**
-     * Defines configuration data.
-     *
-     * The function is called immediatly after init().
-     */
-    public function specialization() {
-
-        // Load user defined title and make sure it's never empty.
-        if (empty($this->config->title)) {
-            $this->title = get_string('pluginname', 'block_autounenrol');
-        } else {
-            $this->title = $this->config->title;
-        }
-    }
-
-    /**
-     * Enables global configuration of the block in settings.php.
-     *
-     * @return bool True if the global configuration is enabled.
-     */
-    function has_config() {
-        return true;
-    }
-
-    /**
-     * Sets the applicable formats for the block.
-     *
-     * @return string[] Array of pages and permissions.
-     */
-    public function applicable_formats() {
-        return array(
-        );
-    }
 }

@@ -1,4 +1,4 @@
-# autounenrol #
+# blocka_unenrolpl #
 
 TODO Describe the plugin shortly here.
 

@@ -15,14 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin strings are defined here.
+ * Plugin version and other meta-data are defined here.
  *
- * @package     block_autounenrol
- * @category    string
+ * @package     block_unenrolpl
  * @copyright   2018 Igor <cidor361@gmail.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'block_autounenrol';
+$plugin->component = 'block_unenrolpl';
+$plugin->release = '0.1.0';
+$plugin->version = 2017081349;
+$plugin->requires = 2015111300;
+$plugin->maturity = MATURITY_ALPHA;
