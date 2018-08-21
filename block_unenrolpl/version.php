@@ -26,6 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'block_unenrolpl';
 $plugin->release = '0.1.0';
-$plugin->version = 2017081349;
+$plugin->version = 2017081358;
 $plugin->requires = 2015111300;
 $plugin->maturity = MATURITY_ALPHA;

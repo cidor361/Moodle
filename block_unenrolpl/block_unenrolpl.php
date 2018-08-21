@@ -45,6 +45,7 @@ class block_unenrolpl extends block_base {
      * @return stdClass The block contents.
      */
     public function get_content() {
+        global $COURSE, $DB;
 
         if ($this->content !== null) {
             return $this->content;
@@ -63,12 +64,62 @@ class block_unenrolpl extends block_base {
         if (!empty($this->config->text)) {
             $this->content->text = $this->config->text;
         } else {
-            $this->content->text = 'list of users';
-            global $COURSE;
+//            $this->content->text = 'list of users';
+            $context = context_course::instance(2);         //input current id
+            $arrayofusers = get_enrolled_sql($context, '', 0, true);
+            $text = implode(' ', $arrayofusers);            //neet to output
+            $this->context->text = $text;
 
 // The other code.
-            $url = new moodle_url('/blocks/unenrolpl/view.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
-            $this->content->footer = html_writer::link($url, get_string('addpage', 'block_unenrolpl'));
+            $url = new moodle_url('/blocks/unenrolpl/report.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
+            $this->content->footer = html_writer::link($url, get_string('newpage', 'block_unenrolpl'));
+
+//            $context = context_course::instance($COURSE->id);
+            //$arrayofusers = get_enrolled_sql($context, '', 0, true);
+            //$arrayofusers = get_enrolled_join($context, 3, false);
+            ////$arrayofusers = get_enrolled_users($context, '', 0, 'u.*',  null, 0, 0, false);
+            ////$text = count_enrolled_users($context, '', 0, false);		//num of users
+            //$text = $COURSE->id;
+            //$arrayy = get_role_users(5 , $context);
+//            $text = implode('|', $arrayofusers);
+
+//            $arrayofusers = get_users_by_capability($context, '');
+//            $students = get_role_users(5 , $context);
+
+//            $this->content->text = $text;
+
+
+
+/**
+            $courseid = required_param('courseid', PARAM_INT);
+            $context = context_course::instance($courseid);
+            $userfields = user_picture::fields('u', array('username'));
+            $from = "FROM {user} u
+            INNER JOIN {role_assignments} a ON a.userid = u.id
+            LEFT JOIN {ranking_points} r ON r.userid = u.id AND r.courseid = :r_courseid
+            INNER JOIN {context} c ON c.id = a.contextid";
+
+            $where = "WHERE a.contextid = :contextid
+            AND a.userid = u.id
+            AND a.roleid = :roleid
+            AND c.instanceid = :courseid";
+
+            $params['contextid'] = $context->id;
+            $params['roleid'] = 5;
+            $params['courseid'] = $COURSE->id;
+            $params['r_courseid'] = $params['courseid'];
+
+            $order = "ORDER BY r.points DESC, u.firstname ASC
+            LIMIT " . $perpage;
+
+            $sql = "SELECT $userfields, r.points $from $where $order";
+            $students = array_values($DB->get_records_sql($sql, $params));
+
+
+            //get_instance_name($instance);
+            //unenrol_user(stdClass $instance, $userid);
+            $this->content->text = ($students);
+*/
         }
         return $this->content;
     }
