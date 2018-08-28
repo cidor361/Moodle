@@ -14,23 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Block unenrolpl is defined here.
- *
- * @package     block_unenrolpl
- * @copyright   2018 Igor <cidor361@gmail.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+require_once("{$CFG->libdir}/completionlib.php");
+$cinfo = new completion_info($course_object);
+$iscomplete = $cinfo->is_course_complete($USER->id);
 
-/**
- * unenrolpl block.
- *
- * @package    block_unenrolpl
- * @copyright  2018 Igor <cidor361@gmail.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 class block_unenrolpl extends block_base {
-
     /**
      * Initializes class member variables.
      */
@@ -45,17 +33,16 @@ class block_unenrolpl extends block_base {
      * @return stdClass The block contents.
      */
     public function get_content() {
+
         global $COURSE, $DB;
 
         if ($this->content !== null) {
             return $this->content;
         }
-
         if (empty($this->instance)) {
             $this->content = '';
             return $this->content;
         }
-
         $this->content = new stdClass();
         $this->content->items = array();
         $this->content->icons = array();
@@ -67,10 +54,14 @@ class block_unenrolpl extends block_base {
             $url = new moodle_url('/blocks/unenrolpl/report.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
             $this->content->footer = html_writer::link($url, get_string('newpage', 'block_unenrolpl'));
 
-            $context = context_course::instance(2);
+            $context = context_course::instance($COURSE->id);
 
             $filds = 'u.id';
             $arrayofusers = get_role_users(5 , $context, false, $filds);
+
+
+            //  $completion = new completion_info($context);
+            //$arrayofusers = get_completion(3);
 
             $table = new html_table();
             $table->id = "whodat";
@@ -110,5 +101,4 @@ class block_unenrolpl extends block_base {
         return $this->content;
     }
 
-}
 }

@@ -25,9 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'blocka_unenrolpl';
-$string['unenrolplsettings'] = 'settings';
-$string['edithtml'] = 'edit';
+$string['pluginname'] = 'Unenrolpl';
 $string['textfields'] = 'List of users';
 $string['newpage'] = 'View list of user completed course to unenrol them';
 $string['buttonCancel'] = 'Cancel';
@@ -40,3 +38,5 @@ $string['report_head'] = 'All students: {$a} students';
 $string['table_position'] = 'Position';
 $string['table_name'] = 'Fullname';
 $string['table_points'] = 'Points';
+$string['firstname'] = 'Firstname';
+$string['lastname'] = 'Surname';
