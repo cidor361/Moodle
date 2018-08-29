@@ -215,7 +215,7 @@ if (!$csv) {
     print '<br class="clearer"/>'; // ugh
 
     $total_header = ($total == $grandtotal) ? $total : "{$total}/{$grandtotal}";
-    echo $OUTPUT->heading(get_string('allparticipants').": {$total_header}", 3);
+    echo $OUTPUT->heading(get_string('listofusers', 'block_unenrolpl').": {$total_header}", 3);
 
     print $pagingbar;
 
@@ -369,6 +369,8 @@ foreach ($progress as $user) {
         }
     }
 
+    $qq = 1;
+    $arrayofusers = array();
     // Progress for each course completion criteria
     foreach ($criteria as $criterion) {
 
@@ -430,6 +432,18 @@ foreach ($progress as $user) {
 
         // Handle all other criteria
         $completiontype = $is_complete ? 'y' : 'n';
+
+
+
+        //Array of users completed course
+        $q = $user->id;
+        if ($completiontype == 'y') {
+            $arrayofusers[$qq] = $q;
+            $qq = $qq + 1;
+        }
+
+
+
         $completionicon = 'completion-auto-'.$completiontype;
 
         $describe = get_string('completion-'.$completiontype, 'completion');
