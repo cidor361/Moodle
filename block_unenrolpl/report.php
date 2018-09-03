@@ -18,10 +18,13 @@
 
 require_once(__DIR__.'/../../config.php');
 require_once("{$CFG->libdir}/completionlib.php");
+//require_once($CFG->libdir.'/enrollib.php');
+//require_once("{$CFG->libdir}/enrollib.php");
 //require_once('../../config.php');
 require_once('unenrolpl_form.php');
-require_once($CFG->dirroot.'/user/lib.php');
-require_once($CFG->libdir.'/tablelib.php');
+// require_once('block_unenrolpl.php');
+//require_once($CFG->dirroot.'/user/lib.php');
+//require_once($CFG->libdir.'/tablelib.php');
 
 /**
  * Configuration
@@ -304,7 +307,6 @@ if (!$csv) {
     print '<th class="criteriaicon">';
     print $OUTPUT->pix_icon('i/course', get_string('coursecomplete', 'completion'));
     print '</th>';
-
     print '</tr></thead>';
 
     echo '<tbody>';
@@ -363,13 +365,12 @@ foreach ($progress as $user) {
             $userurl = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $course->id));
         }
 
-        print '<th scope="row"><a href="'.$userurl->out().'">'.fullname($user).'</a></th>';
+        print '<th scope="row"><a href="' .$userurl->out().'">' . html_writer::empty_tag('input', array('type' => 'checkbox', 'name' => 'fieldname')) . ' ' .fullname($user) . '</a></th>';
         foreach ($extrafields as $field) {
             echo '<td>'.s($user->{$field}).'</td>';
         }
     }
 
-    $qq = 1;
     $arrayofusers = array();
     // Progress for each course completion criteria
     foreach ($criteria as $criterion) {
@@ -432,16 +433,6 @@ foreach ($progress as $user) {
 
         // Handle all other criteria
         $completiontype = $is_complete ? 'y' : 'n';
-
-
-
-        //Array of users completed course
-        $q = $user->id;
-        if ($completiontype == 'y') {
-            $arrayofusers[$qq] = $q;
-            $qq = $qq + 1;
-        }
-
 
 
         $completionicon = 'completion-auto-'.$completiontype;
@@ -533,6 +524,7 @@ foreach ($progress as $user) {
     } else {
         print '</tr>';
     }
+
 }
 
 if ($csv) {
@@ -543,6 +535,15 @@ if ($csv) {
 
 print '</table>';
 print $pagingbar;
+
+
+$mform = new unenrolpl_form();
+if ($mform->is_cancelled()) {
+
+}
+$mform->display();
+echo $OUTPUT->single_button(new moodle_url('http://sm-v-edi.main.vsu.ru/grebennikov/moodle/course/view.php?$courseid', array('id' => $courseid)), 'Cancel', 'get');
+// print  html_writer::link(new moodle_url('/local/whatever/script.php', array('id' => $id)), 'Link text');
 
 echo $OUTPUT->footer($course);
 
