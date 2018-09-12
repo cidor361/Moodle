@@ -14,7 +14,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 
 require_once(__DIR__.'/../../config.php');
 require_once("{$CFG->libdir}/completionlib.php");
@@ -33,7 +33,8 @@ define('COMPLETION_REPORT_PAGE',        25);
 define('COMPLETION_REPORT_COL_TITLES',  true);
 
 global $COURSE;
-
+$arrayofusers = array();
+$arrayofusername = array();
 /*
  * Setup page, check permissions
  */
@@ -68,6 +69,8 @@ if ($group === 0 && $course->groupmode == SEPARATEGROUPS) {
     require_capability('moodle/site:accessallgroups',$context);
 }
 
+$mform = new unenrolpl_form();
+
 /**
  * Load data
  */
@@ -95,7 +98,7 @@ foreach ($completion->get_criteria(COMPLETION_CRITERIA_TYPE_ACTIVITY) as $criter
 
 foreach ($completion->get_criteria() as $criterion) {
     if (!in_array($criterion->criteriatype, array(
-        COMPLETION_CRITERIA_TYPE_COURSE, COMPLETION_CRITERIA_TYPE_ACTIVITY))) {
+            COMPLETION_CRITERIA_TYPE_COURSE, COMPLETION_CRITERIA_TYPE_ACTIVITY))) {
         $criteria[] = $criterion;
     }
 }
@@ -239,15 +242,15 @@ if (!$csv) {
 
     $sistring = "&amp;silast={$silast}&amp;sifirst={$sifirst}";
 
-    print get_string('firstname', block_unenrolpl);
-    print ' / ';
-    print get_string('lastname');
+print get_string('firstname', block_unenrolpl);
+print ' / ';
+print get_string('lastname');
     print '</th>';
 
     // Print user identity columns
     foreach ($extrafields as $field) {
         echo '<th scope="col" class="completion-identifyfield">' .
-            get_user_field_name($field) . '</th>';
+                get_user_field_name($field) . '</th>';
     }
 
     ///
@@ -317,7 +320,7 @@ if (!$csv) {
     $row[] = get_string('id', 'report_completion');
     $row[] = get_string('name', 'report_completion');
     foreach ($extrafields as $field) {
-        $row[] = get_user_field_name($field);
+       $row[] = get_user_field_name($field);
     }
 
     // Add activity headers
@@ -329,7 +332,7 @@ if (!$csv) {
             // Load activity
             $mod = $criterion->get_mod_instance();
             $row[] = $formattedname = format_string($mod->name, true,
-                array('context' => context_module::instance($criterion->moduleinstance)));
+                    array('context' => context_module::instance($criterion->moduleinstance)));
             $row[] = $formattedname . ' - ' . get_string('completiondate', 'report_completion');
         }
         else {
@@ -346,6 +349,7 @@ if (!$csv) {
 ///
 /// Display a row for each user
 ///
+$i = 0;
 foreach ($progress as $user) {
 
     // User name
@@ -365,13 +369,16 @@ foreach ($progress as $user) {
             $userurl = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $course->id));
         }
 
-        print '<th scope="row"><a href="' .$userurl->out().'">' . html_writer::empty_tag('input', array('type' => 'checkbox', 'name' => 'fieldname')) . ' ' .fullname($user) . '</a></th>';
+        print '<th scope="row"><a href="' .$userurl->out().'">' .fullname($user) . '</a></th>';
+
+//        print '<th scope="row"><a href="' .$userurl->out().'">' .fullname($user) . '</a></th>';
+//        print '<th scope="row"><a href="' .$userurl->out().'">' . html_writer::empty_tag('input', array('type' => 'checkbox', 'name' => 'fieldname')) . ' ' .fullname($user) . '</a></th>';
+
         foreach ($extrafields as $field) {
             echo '<td>'.s($user->{$field}).'</td>';
         }
     }
 
-    $arrayofusers = array();
     // Progress for each course completion criteria
     foreach ($criteria as $criterion) {
 
@@ -433,8 +440,30 @@ foreach ($progress as $user) {
 
         // Handle all other criteria
         $completiontype = $is_complete ? 'y' : 'n';
-
-
+        
+        if ($is_complete == 'y') {
+            $arrayofusers[$i] = $user->id;
+            $arrayofusername[i] = fullname($user);
+            $i = $i + 1;
+            }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         $completionicon = 'completion-auto-'.$completiontype;
 
         $describe = get_string('completion-'.$completiontype, 'completion');
@@ -512,7 +541,7 @@ foreach ($progress as $user) {
     } else {
 
         print '<td class="completion-progresscell">';
-
+        
         // Display course completion status icon
         print $OUTPUT->pix_icon('i/completion-auto-' . $completiontype, $fulldescribe);
 
@@ -537,15 +566,20 @@ print '</table>';
 print $pagingbar;
 
 
-$mform = new unenrolpl_form();
 if ($mform->is_cancelled()) {
-
-}
-$mform->display();
+    
+    }
+  $mform->display();
+echo $OUTPUT->single_button(new moodle_url('http://sm-v-edi.main.vsu.ru/grebennikov/moodle/blocks/unenrolpl/unenrol.php', array('id' => $courseid)), 'Unenrol', 'get');
 echo $OUTPUT->single_button(new moodle_url('http://sm-v-edi.main.vsu.ru/grebennikov/moodle/course/view.php?$courseid', array('id' => $courseid)), 'Cancel', 'get');
-// print  html_writer::link(new moodle_url('/local/whatever/script.php', array('id' => $id)), 'Link text');
 
 echo $OUTPUT->footer($course);
+// print  html_writer::link(new moodle_url('/local/whatever/script.php', array('id' => $id)), 'Link text');    
+session_start();
+$_SESSION['arrayofusers'] = $arrayofusers;
+$_SESSION['arrayofusername'] = $arrayofusername;
+
+
 
 // Trigger a report viewed event.
 $event = \report_completion\event\report_viewed::create(array('context' => $context));

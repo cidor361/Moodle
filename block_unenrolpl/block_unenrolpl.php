@@ -19,23 +19,16 @@ $cinfo = new completion_info($course_object);
 $iscomplete = $cinfo->is_course_complete($USER->id);
 
 class block_unenrolpl extends block_base {
-    /**
-     * Initializes class member variables.
-     */
+
     public function init() {
         // Needed by Moodle to differentiate between blocks.
         $this->title = get_string('pluginname', 'block_unenrolpl');
     }
 
-    /**
-     * Returns the block contents.
-     *
-     * @return stdClass The block contents.
-     */
     public function get_content() {
-
-        global $COURSE, $DB;
-
+    
+        global $COURSE;
+        
         if ($this->content !== null) {
             return $this->content;
         }
@@ -52,51 +45,20 @@ class block_unenrolpl extends block_base {
             $this->content->text = $this->config->text;
         } else {
             $url = new moodle_url('/blocks/unenrolpl/report.php', array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
-            $this->content->footer = html_writer::link($url, get_string('newpage', 'block_unenrolpl'));
-
+            $this->content->footer = html_writer::link($url, get_string('Listofcompleteusers', 'block_unenrolpl'));
+            
             $context = context_course::instance($COURSE->id);
 
-            $filds = 'u.id';
-            $arrayofusers = get_role_users(5 , $context, false, $filds);
-
-
-            //  $completion = new completion_info($context);
-            //$arrayofusers = get_completion(3);
-
+            $arrayofusers = get_role_users(5 , $context, false, 'u.id');
+            
             $table = new html_table();
             $table->id = "whodat";
             $table->data = $arrayofusers;
             $table->caption = "Who even knows?";
             $table->captionhide = true;
             $this->content->text = html_writer::table($table);
-
-//        $iscomplete = $cinfo->is_course_complete(id);
-
-            //$context = context_course::instance($COURSE->id);
-            //$text = $COURSE->id;
-            //$this->content->text = html_writer::link('google.com', 'Google');
-
-            /**        $table = new html_table();
-            $table->id = "whodat";
-            $table->data = array(
-            array('fred', 'MDK'),
-            array('bob',  'Burgers'),
-            array('dave', 'Competitiveness')
-            );
-            $table->caption = "Who even knows?";
-            $table->captionhide = true;
-            $this->content->text = html_writer::table($table);
-
-
-
-            //            $context = context_course::instance($COURSE->id);
-            //$text = $COURSE->id;
-            //            $text = implode('|', $arrayofusers);
-
-            //            $students = get_role_users(5 , $context);
-
-            //            $this->content->text = $text;
-             */
+            
+//            $iscomplete = $cinfo->is_course_complete(id);
         }
         return $this->content;
     }

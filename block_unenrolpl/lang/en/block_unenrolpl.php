@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Unenrolpl';
 $string['textfields'] = 'List of users';
-$string['newpage'] = 'View list of user completed course to unenrol them';
+$string['Listofcompleteusers'] = 'View list of user completed course';
 $string['buttonCancel'] = 'Cancel';
 $string['buttonUnenrol'] = 'Unenrol';
 $string['resert'] = 'Reset';
@@ -40,3 +40,4 @@ $string['table_name'] = 'Fullname';
 $string['table_points'] = 'Points';
 $string['firstname'] = 'Firstname';
 $string['lastname'] = 'Surname';
+$string['listofusers'] = 'List of Users';
